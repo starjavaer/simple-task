@@ -7,6 +7,7 @@ import com.ixingji.task.serial.model.*;
 import com.ixingji.task.serial.util.SerialTaskUtils;
 import com.ixingji.task.util.AssertUtils;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +23,15 @@ public class SerialTaskExecutor {
     private List<String[]> subTasksShards;
 
     @Getter
+    @Setter
     private SerialTaskListener taskListener;
 
     @Getter
+    @Setter
     private SerialSubTaskListener subTaskListener;
 
     @Getter
+    @Setter
     private SerialSubTaskShardListener subTaskShardListener;
 
     public SerialTaskExecutor(String taskName) {

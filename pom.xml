@@ -12,6 +12,7 @@
     <module>simple-task-base</module>
     <module>simple-task-atomic</module>
     <module>simple-task-serial</module>
+    <module>simple-task-demo</module>
   </modules>
 
   <name>simple-task</name>

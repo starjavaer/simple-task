@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SubTaskDao">
+
+    <select id="queryById" resultType="com.ixingji.task.demo.serial.model.BusinessTask">
+        SELECT * FROM `subtask` WHERE `id` = #{id}
+    </select>
+
+    <select id="queryListByTaskId" resultType="com.ixingji.task.demo.serial.model.BusinessTask">
+        SELECT * FROM `subtask` WHERE `task_id` = #{taskId}
+    </select>
+
+    <!--插入数据-->
+    <insert id="insert" parameterType="com.ixingji.task.demo.serial.model.BusinessTask" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `subtask`
+        (
+        <if test="name != null and name != ''">
+            `name`,
+        </if>
+        <if test="state != null">
+            `state`,
+        </if>
+        <if test="index != null">
+            `index`,
+        </if>
+        <if test="shards != null">
+            `shards`,
+        </if>
+        <if test="param != null">
+            `param`,
+        </if>
+        <if test="taskId ! = null">
+            `task_id`,
+        </if>
+        `create_time`,
+        `update_time`
+        )
+        VALUES
+        (
+        <if test="name != null and name != ''">
+            #{name},
+        </if>
+        <if test="state != null">
+            #{state},
+        </if>
+        <if test="index != null">
+            #{index},
+        </if>
+        <if test="shards != null">
+            #{shards},
+        </if>
+        <if test="param != null">
+            #{param},
+        </if>
+        <if test="taskId ! = null">
+            #{task_id},
+        </if>
+        now(),
+        now()
+        );
+    </insert>
+
+    <update id="update" parameterType="com.ixingji.task.demo.serial.model.BusinessTask">
+        UPDATE `task`
+        <set>
+            <if test="state != null">
+                `state` = #{state},
+            </if>
+            <if test="log != null">
+                `log` = #{log},
+            </if>
+            `update_time` = now()
+        </set>
+        WHERE id = #{id};
+    </update>
+
+</mapper>
