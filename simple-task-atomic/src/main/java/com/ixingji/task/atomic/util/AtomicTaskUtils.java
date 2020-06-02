@@ -10,7 +10,7 @@ public class AtomicTaskUtils {
         AtomicTask atomicTask = new AtomicTask(taskName);
         atomicTask.setHandler(taskHandler);
         atomicTask.setDistributed(distributed);
-        AtomicTaskManager.registerTask(atomicTask);
+        AtomicTaskManager.register(atomicTask);
         return atomicTask;
     }
 
@@ -19,10 +19,10 @@ public class AtomicTaskUtils {
         lastTask.setHandler(taskHandler);
         lastTask.setDistributed(distributed);
 
-        AtomicTask atomicTask = AtomicTaskManager.getTask(taskName);
+        AtomicTask atomicTask = AtomicTaskManager.get(taskName);
         lastTask.setPrev(atomicTask);
 
-        AtomicTaskManager.registerTask(atomicTask);
+        AtomicTaskManager.register(atomicTask);
         return lastTask;
     }
 

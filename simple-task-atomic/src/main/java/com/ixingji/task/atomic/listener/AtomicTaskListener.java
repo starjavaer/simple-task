@@ -52,11 +52,11 @@ public class AtomicTaskListener implements PathChildrenCacheListener {
                 AtomicTaskHandler taskHandler = AtomicTaskHandlerManager.getHandler(taskData.getHandlerName());
 
                 AtomicTask atomicTask;
-                if ((atomicTask = AtomicTaskManager.getTask(taskName)) == null
+                if ((atomicTask = AtomicTaskManager.get(taskName)) == null
                         || !Objects.equals(atomicTask.getOwner(), AtomicTask.Owner.SENDER)) {
                     atomicTask = new AtomicTask(taskName, AtomicTask.Owner.PARTER);
                     atomicTask.setHandler(taskHandler);
-                    AtomicTaskManager.registerTask(atomicTask);
+                    AtomicTaskManager.register(atomicTask);
                 }
 
                 String myNode = AtomicTaskPathUtils.myNode(taskName, AtomicTaskAction.HANDLE);
@@ -89,7 +89,7 @@ public class AtomicTaskListener implements PathChildrenCacheListener {
                 }
                 break;
             case CHILD_UPDATED:
-                atomicTask = AtomicTaskManager.getTask(taskName);
+                atomicTask = AtomicTaskManager.get(taskName);
 
                 taskHandler = atomicTask.getHandler();
 
@@ -125,7 +125,7 @@ public class AtomicTaskListener implements PathChildrenCacheListener {
                         myNode = AtomicTaskPathUtils.myNode(taskName, AtomicTaskAction.FINISH);
 
                         try {
-                            AtomicTaskManager.unregisterTask(taskName);
+                            AtomicTaskManager.unregister(taskName);
                         } catch (Exception e) {
                             hasErr = true;
                             LOGGER.error("finish error, ", e);

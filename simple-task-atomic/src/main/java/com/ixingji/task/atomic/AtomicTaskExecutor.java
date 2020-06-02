@@ -18,7 +18,6 @@ import org.apache.curator.framework.CuratorFramework;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +26,7 @@ public class AtomicTaskExecutor {
     private static final Logger LOGGER = LoggerFactory.getLogger(AtomicTaskExecutor.class);
 
     public static <T> boolean execute(String taskName, T data, AtomicTaskHandler<T> taskHandler) throws Exception {
-        AtomicTask atomicTask = AtomicTaskManager.getTask(taskName);
+        AtomicTask atomicTask = AtomicTaskManager.get(taskName);
         if (atomicTask == null) {
             // task链上第一个task
             atomicTask = AtomicTaskUtils.registerTask(taskName, taskHandler, false);
@@ -58,7 +57,7 @@ public class AtomicTaskExecutor {
 
     public static <T> boolean distribute(String taskName, T data, String handlerName) throws Exception {
 
-        AtomicTask atomicTask = AtomicTaskManager.getTask(taskName);
+        AtomicTask atomicTask = AtomicTaskManager.get(taskName);
 
         AtomicTaskHandler<?> taskHandler = AtomicTaskHandlerManager.getHandler(handlerName);
         if (atomicTask == null) {
@@ -108,7 +107,7 @@ public class AtomicTaskExecutor {
     }
 
     public static <T> boolean restore(String taskName, T data) throws Exception {
-        AtomicTask atomicTask = AtomicTaskManager.getTask(taskName);
+        AtomicTask atomicTask = AtomicTaskManager.get(taskName);
 
         if (atomicTask == null) {
             throw new TaskNotFoundException("none task, name: " + taskName);
@@ -166,12 +165,12 @@ public class AtomicTaskExecutor {
     }
 
     public static void finishAsync(String taskName) {
-        AtomicTask atomicTask = AtomicTaskManager.getTask(taskName);
+        AtomicTask atomicTask = AtomicTaskManager.get(taskName);
         AtomicTaskFinishQueue.getInstance().offer(atomicTask);
     }
 
     public static void finish(String taskName) throws Exception {
-        AtomicTask atomicTask = AtomicTaskManager.getTask(taskName);
+        AtomicTask atomicTask = AtomicTaskManager.get(taskName);
 
         // 判断任务链中是否包含分发类任务
         boolean containsDistributed = false;
@@ -185,7 +184,7 @@ public class AtomicTaskExecutor {
         }
 
         if (!containsDistributed) {
-            AtomicTaskManager.unregisterTask(taskName);
+            AtomicTaskManager.unregister(taskName);
         } else {
             String taskPath = TaskPathUtils.task(taskName);
             String finishPath = AtomicTaskPathUtils.taskAction(taskName, AtomicTaskAction.FINISH);

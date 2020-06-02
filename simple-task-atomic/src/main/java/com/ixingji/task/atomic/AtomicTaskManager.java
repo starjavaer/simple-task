@@ -11,15 +11,15 @@ public final class AtomicTaskManager {
     private static final Cache<String, AtomicTask> TASK_CACHE = CacheBuilder.newBuilder()
             .expireAfterAccess(600, TimeUnit.SECONDS).build();
 
-    public static AtomicTask getTask(String taskName) {
+    public static AtomicTask get(String taskName) {
         return TASK_CACHE.getIfPresent(taskName);
     }
 
-    public static void registerTask(AtomicTask task) {
+    public static void register(AtomicTask task) {
         TASK_CACHE.put(task.getName(), task);
     }
 
-    public static void unregisterTask(String taskName) {
+    public static void unregister(String taskName) {
         TASK_CACHE.invalidate(taskName);
     }
 
